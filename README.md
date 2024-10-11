@@ -57,7 +57,7 @@ The project uses a MySQL database. The connection configurations are as follows:
 Make sure the environment variables are correctly set in the `.env` file or the `application.properties` file:
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/your_database_name
+spring.datasource.url=jdbc:mysql://localhost:3306/demodb
 spring.datasource.username=root
 spring.datasource.password=your_password
 ```
