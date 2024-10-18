@@ -1,4 +1,4 @@
-package com.demo.demo.Services;
+package com.demo.demo.services;
 
 import com.demo.demo.model.Product;
 

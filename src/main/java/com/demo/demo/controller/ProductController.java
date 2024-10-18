@@ -1,7 +1,7 @@
 package com.demo.demo.controller;
 
 
-import com.demo.demo.Services.ProductService;
+import com.demo.demo.services.ProductService;
 import com.demo.demo.model.Product;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
