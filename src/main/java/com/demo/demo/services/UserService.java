@@ -1,5 +1,6 @@
 package com.demo.demo.services;
-import com.demo.demo.exception.NotFoundException;
+import com.demo.demo.Exception.ForbiddenException;
+import com.demo.demo.Exception.NotFoundException;
 import com.demo.demo.model.User;
 import com.demo.demo.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -24,8 +25,6 @@ public class UserService {
         return passwordEncoder.matches(password, encode);
     }
 
-
-
     public User create(User user) {
         if (!user.getPassword().isEmpty()) {
             user.setPassword(this.encryptPassword(user.getPassword()));
@@ -36,9 +35,8 @@ public class UserService {
 
     }
 
-
     public User update(Long id, User user) {
-        return userRepository.findById(id).map(u -> {
+        return userRepository.findByIdAndIsDeletedFalse(id).map(u -> {
             boolean isSamePassword = this.decryptPassword(user.getPassword(), u.getPassword());
             if (!isSamePassword) {
                 u.setPassword(this.encryptPassword(user.getPassword()));
@@ -48,7 +46,7 @@ public class UserService {
                 return userRepository.save(u);
             }
             else {
-                throw new NotFoundException("Passwords can not the same");
+                throw new ForbiddenException("Passwords can not the same");
             }
 
         }).orElseThrow(() -> new NotFoundException("User not found"));
@@ -56,14 +54,15 @@ public class UserService {
 
 
     public void delete(Long id) {
-        userRepository.findById(id).map(u -> {
+        userRepository.findByIdAndIsDeletedFalse(id).map(u -> {
             u.setDeleted_at(new Date());
+            u.setDeleted(true);
             return userRepository.save(u);
         }).orElseThrow(() -> new NotFoundException("User not found"));
     }
 
 
     public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found"));
+        return userRepository.findByIdAndIsDeletedFalse(id).orElseThrow(() -> new NotFoundException("User not found"));
     }
 }

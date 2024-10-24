@@ -1,6 +1,6 @@
 package com.demo.demo.services;
 
-import com.demo.demo.exception.NotFoundException;
+import com.demo.demo.Exception.NotFoundException;
 import com.demo.demo.model.Product;
 import com.demo.demo.repository.ProductRepository;
 import lombok.AllArgsConstructor;
