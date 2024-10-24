@@ -20,16 +20,16 @@ This command will start the database and PhpMyAdmin only.
 Since the Java application is not included in Docker, you need to run it from the command line. Follow these steps:
 
 1. Ensure that Java JDK 17 or a compatible version is installed.
-2. Compile the project using Maven (or Gradle if you're using it) by running the following command:
+2. Compile the project using Gradle by running the following command:
 
 ```bash
-./mvnw clean install
+./gradlew clean build
 ```
 
 3. Then, start the Spring Boot server with the following command:
 
 ```bash
-./mvnw spring-boot:run
+./gradlew bootRun
 ```
 
 The application will be accessible at [http://localhost:8080](http://localhost:8080).

@@ -26,18 +26,16 @@ public class User {
     private String password;
     @Column(length = 150)
     private String email;
-
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private Date created_at;
-
     @LastModifiedDate
     @Column()
     private Date updatedAt;
-
     @Column()
     private Date deleted_at;
-
+    @Column()
+    private boolean isDeleted;
     @PrePersist
     public void prePersist() {
         if (this.created_at == null) {

@@ -1,9 +1,10 @@
 package com.demo.demo.controller;
 
 
-import com.demo.demo.services.ProductService;
 import com.demo.demo.model.Product;
+import com.demo.demo.services.ProductSevice;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,29 +14,30 @@ import java.util.Optional;
 @RequestMapping("/product")
 @AllArgsConstructor
 public class ProductController {
-    private final ProductService productService;
+    @Autowired
+    private final ProductSevice productSevice;
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public Product create(@RequestBody Product product) {
-        return productService.create(product);
+        return productSevice.create(product);
     }
 
     @GetMapping("/")
     public List<Product> getProducts() {
-        return productService.getAllProducts();
+        return productSevice.getAllProducts();
     }
     @GetMapping("/{id}")
     public Optional<Product> getProductById(@PathVariable Long id) {
-        return productService.getProductById(id);
+        return productSevice.getProductById(id);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public Product update(@PathVariable Long id, @RequestBody Product product) {
-        return productService.updateProduct(id, product);
+        return productSevice.updateProduct(id, product);
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public Product delete(@PathVariable Long id) {
-        return productService.deleteProduct(id);
+        return productSevice.deleteProduct(id);
     }
 
 }
