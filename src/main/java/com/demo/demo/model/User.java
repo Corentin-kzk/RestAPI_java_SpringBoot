@@ -7,10 +7,11 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "USER_DATA") // The user keyword is reserved in later versions of H2.
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,18 +29,16 @@ public class User {
     private String email;
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private Date created_at;
+    // Ne plus utiliser java.util.Date
+    private LocalDateTime created_at;
     @LastModifiedDate
-    @Column()
-    private Date updatedAt;
-    @Column()
-    private Date deleted_at;
-    @Column()
+    private LocalDateTime updatedAt;
+    private LocalDateTime deleted_at;
     private boolean isDeleted;
     @PrePersist
     public void prePersist() {
         if (this.created_at == null) {
-            this.created_at = new Date();
+            this.created_at = LocalDateTime.now();
         }
     }
 }

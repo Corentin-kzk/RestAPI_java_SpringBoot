@@ -1,4 +1,5 @@
 package com.demo.demo.services;
+
 import com.demo.demo.Exception.ForbiddenException;
 import com.demo.demo.Exception.NotFoundException;
 import com.demo.demo.model.User;
@@ -7,7 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
@@ -17,11 +19,13 @@ public class UserService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    private String encryptPassword(String password) {
+    // QUID de l'utilité si la méthode est un passe plat
+    protected String encryptPassword(String password) {
         return passwordEncoder.encode(password);
     }
 
-   private Boolean decryptPassword(String password, String encode) {
+    // QUID de l'utilité si la méthode est un passe plat
+   protected Boolean validPassword(String password, String encode) {
         return passwordEncoder.matches(password, encode);
     }
 
@@ -37,12 +41,12 @@ public class UserService {
 
     public User update(Long id, User user) {
         return userRepository.findByIdAndIsDeletedFalse(id).map(u -> {
-            boolean isSamePassword = this.decryptPassword(user.getPassword(), u.getPassword());
+            boolean isSamePassword = this.validPassword(user.getPassword(), u.getPassword());
             if (!isSamePassword) {
                 u.setPassword(this.encryptPassword(user.getPassword()));
                 u.setFirstname(user.getFirstname());
                 u.setLastname(user.getLastname());
-                u.setUpdatedAt(new Date());
+                u.setUpdatedAt(LocalDateTime.now());
                 return userRepository.save(u);
             }
             else {
@@ -55,7 +59,7 @@ public class UserService {
 
     public void delete(Long id) {
         userRepository.findByIdAndIsDeletedFalse(id).map(u -> {
-            u.setDeleted_at(new Date());
+            u.setDeleted_at(LocalDateTime.now());
             u.setDeleted(true);
             return userRepository.save(u);
         }).orElseThrow(() -> new NotFoundException("User not found"));
